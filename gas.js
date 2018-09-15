@@ -46,6 +46,6 @@ function testMemo() {
 }
 
 function testTweet() {
-  var sheetId = '';
+  var sheetId = '1RPsEu-Lqo5PnPyoS3evNQzm02Cjy9xMi-04cx1oAHdk';
   Logger.log(testPost(sheetId));
 }

@@ -37,6 +37,7 @@ var Tweet = require("../src/tweet");
 var Messages = require("../src/messages");
 var Memo = require("../src/memo");
 
+// postリクエストから渡ってきたパラメータを解凍する
 global.getPostParameters = function (ev) {
   var params;
   try {
@@ -47,15 +48,19 @@ global.getPostParameters = function (ev) {
   return params;
 };
 
+// ポスト処理の入り口
 global.post = function (sheetId) {
   var tweet = new Tweet();
   return tweet.tweetMemo(sheetId);
 };
 
+// リクエストの応答ページを返す
+// ただしgasの公開Webアプリケーションの応答はステータス302を返すので実質的には捨てられる 
 global.makeContent = function (content) {
   return ContentService.createTextOutput(JSON.stringify({ 'content': content })).setMimeType(ContentService.MimeType.JSON);
 };
 
+// 本番環境で結合テストする
 global.testGetSpreadsheet = function (sheetId) {
   var memo = new Memo(sheetId);
   return memo._getSpreadsheet();
@@ -85,7 +90,8 @@ global.testValues = function (sheetId) {
 };
 
 global.testPost = function (sheetId) {
-  return Tweet.post(sheetId);
+  var tweet = new Tweet();
+  return tweet.tweetMemo(sheetId);
 };
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
