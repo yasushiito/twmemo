@@ -19,8 +19,10 @@ module.exports = class Tweet {
   toTweets(messages) {
     // メッセージの無駄な空白を取り除く
     // メッセージに句点を加える
+    // コマンド行を処理する(現在ハッシュタグ変換のみ)
     // メッセージをできるだけ140文字に収まるように結合する 
-    return Messages.joinMessages(Messages.addPeriod(Messages.strippedMessages(messages)));
+    // ツイートが極力無駄のないように結合するがハッシュタグが別のツイートに分断されることはある 
+    return Messages.joinMessages(Messages.replaceTag(Messages.addPeriod(Messages.strippedMessages(messages))));
   }
 
   tweetMemo(sheetId) {

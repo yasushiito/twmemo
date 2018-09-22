@@ -267,22 +267,39 @@ module.exports = function () {
   }
 
   _createClass(Messages, null, [{
-    key: "strippedMessages",
+    key: "strippedMessage",
+
+    // 受け取った文字列内の余分なスペースを取り除く 
+    value: function strippedMessage(message) {
+      if (Messages.hasTag(message)) {
+        return message;
+      } else {
+        return message.replace(/\s+/g, "");
+      }
+    }
 
     // 配列で受け取った文字列内の余分なスペースを取り除く 
+    // ただしハッシュタグ行の時は処理しない
+
+  }, {
+    key: "strippedMessages",
     value: function strippedMessages(messages) {
       return messages.map(function (value, index, array) {
-        return value.replace(/\s+/g, "");
+        return Messages.strippedMessage(value);
       });
     }
 
-    // 文字列に句点を加える ただし末尾が!や?の時はくわえない  
+    // 文字列に句点を加える ただしハッシュタグ行及び 末尾が!や?の時はくわえない  
 
   }, {
     key: "addPeriod",
     value: function addPeriod(messages) {
       return messages.map(function (value, index, array) {
-        return value.replace(/([^!?])$/g, "$1。");
+        if (Messages.hasTag(value)) {
+          return value;
+        } else {
+          return value.replace(/([^!?])$/g, "$1。");
+        }
       });
     }
 
@@ -305,6 +322,30 @@ module.exports = function () {
       }
       res.push(msg);
       return res;
+    }
+
+    // ハッシュタグ行ならタグを配列で返す
+    // ハッシュタグ行でなければfalseを返す 
+
+  }, {
+    key: "hasTag",
+    value: function hasTag(message) {
+      if (!message.match(/^ハッシュタグ/)) return false;
+      return message.replace(/^ハッシュタグ/, '').trim().split(/\s/);
+    }
+
+    // メッセージ配列を受け取り各行がハッシュタグ行ならすべてのタグに#をつけてメッセージ配列で返す 
+
+  }, {
+    key: "replaceTag",
+    value: function replaceTag(messages) {
+      var tags;
+      return messages.map(function (message) {
+        if (!(tags = Messages.hasTag(message))) return message;
+        return tags.map(function (value) {
+          return '#' + value;
+        });
+      });
     }
   }]);
 
@@ -345,8 +386,10 @@ module.exports = function () {
     value: function toTweets(messages) {
       // メッセージの無駄な空白を取り除く
       // メッセージに句点を加える
+      // コマンド行を処理する(現在ハッシュタグ変換のみ)
       // メッセージをできるだけ140文字に収まるように結合する 
-      return Messages.joinMessages(Messages.addPeriod(Messages.strippedMessages(messages)));
+      // ツイートが極力無駄のないように結合するがハッシュタグが別のツイートに分断されることはある 
+      return Messages.joinMessages(Messages.replaceTag(Messages.addPeriod(Messages.strippedMessages(messages))));
     }
   }, {
     key: "tweetMemo",
