@@ -100,17 +100,17 @@ describe("hasTag", function(){
   describe("replaceTag", function(){
   it("タグが含まれているならタグに#をつける", function(){
     sinon.stub(Messages, 'hasTag').returns(['test']);
-    expect(Messages.replaceTag(["ハッシュタグ test"])).to.deep.include(['#test']);
+    expect(Messages.replaceTag(["ハッシュタグ test"])[0]).to.equal('#test');
     Messages.hasTag.restore();
   })
   it("タグにはすべて#をつける", function(){
     sinon.stub(Messages, 'hasTag').returns(['1st', '2nd']);
-    expect(Messages.replaceTag(["ハッシュタグ 1st 2nd"])).to.deep.include(["#1st", '#2nd']);
+    expect(Messages.replaceTag(["ハッシュタグ 1st 2nd"])[0]).to.equal('#1st\n#2nd');
     Messages.hasTag.restore();
   })
   it("ハッシュタグ行でなければ加工せずに返す", function(){
     sinon.stub(Messages, 'hasTag').returns(false);
-    expect(Messages.replaceTag(["test"])).to.include.members(['test']);
+    expect(Messages.replaceTag(["test"])[0]).to.equal('test');
     Messages.hasTag.restore();
   })
 

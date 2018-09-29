@@ -61,6 +61,7 @@ module.exports = function (_Sheet) {
       var l = _get(Dictionary.prototype.__proto__ || Object.getPrototypeOf(Dictionary.prototype), "load", this).call(this);
       if (!l) return l;
       this.words = this.values();
+      return l;
     }
   }, {
     key: "replace",
@@ -313,7 +314,7 @@ module.exports = function () {
         if (!(tags = Messages.hasTag(message))) return message;
         return tags.map(function (value) {
           return '#' + value;
-        });
+        }).join("\n");
       });
     }
   }, {

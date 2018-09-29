@@ -55,7 +55,7 @@ module.exports = class Messages {
     var tags;
     return messages.map((message) => {
       if (!(tags = Messages.hasTag(message))) return message;
-      return tags.map((value) => {return '#' + value});
+      return tags.map((value) => {return '#' + value;}).join("\n");
     });
   }
 
