@@ -40,12 +40,15 @@ function testMemo() {
   var sheetId = '';
   Logger.log(testGetSpreadsheet(sheetId));
   Logger.log(testGetSheet(sheetId));
-  Logger.log(testGetRange(sheetId));
-  Logger.log(testLastRow(sheetId));
+  Logger.log(testSelectAll(sheetId));
   Logger.log(testValues(sheetId));
 }
 
 function testTweet() {
   var sheetId = '';
   Logger.log(testPost(sheetId));
+}
+function testReplace() {
+  var sheetId = '';
+  Logger.log(testDictionary(sheetId, 'グーグル ギットハブ'));
 }

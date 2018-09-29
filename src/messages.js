@@ -58,4 +58,11 @@ module.exports = class Messages {
       return tags.map((value) => {return '#' + value});
     });
   }
+
+  static replaceByDictionary(messages, dictionary) {
+    if (!dictionary) return messages;
+    return messages.map((message) => {
+      return dictionary.replace(message);
+    });
+  }
 }
