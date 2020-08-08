@@ -4,6 +4,7 @@ var Messages = require("../src/messages");
 var Memo = require("../src/memo");
 var Dictionary = require("../src/dictionary");
 
+
 // postリクエストから渡ってきたパラメータを解凍する
 global.getPostParameters = function(ev) {
   var params;
